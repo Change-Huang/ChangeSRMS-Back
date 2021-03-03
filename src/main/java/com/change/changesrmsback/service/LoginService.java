@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
+ * 用户登录业务逻辑
  * @author Change
  */
 @Service
 public class LoginService {
 
+    /** 用户登录持久层 */
     private UserDao userDao;
 
     @Autowired
