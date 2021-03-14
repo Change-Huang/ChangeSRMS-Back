@@ -13,7 +13,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 /**
- * 验证码生成类
+ * 验证码图片生成类
  * @author Change
  *
  */

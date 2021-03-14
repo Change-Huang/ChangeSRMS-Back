@@ -2,6 +2,7 @@ package com.change.changesrmsback.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -37,5 +38,20 @@ public class CommonUtils {
 		Date date = new Date();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		return dateFormat.format(date);
+	}
+
+	/**
+	 * 随机生成四位数字字符串
+	 * @return 包含四位数的随机字符串
+	 */
+	public static String getRandomCode() {
+		Random random = new Random();
+		String codes = "1234567890";
+		StringBuilder result = new StringBuilder();
+		for (int i = 0; i < 4; i++) {
+			int index = random.nextInt(codes.length());
+			result.append(codes.charAt(index));
+		}
+		return result.toString();
 	}
 }
