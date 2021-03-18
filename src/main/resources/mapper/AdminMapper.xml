@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.changesrmsback.mapper.AdminMapper">
+
+    <insert id="insertOneAdmin">
+		insert into `admin` (id, adminName, adminPassword, role)
+			values (#{id}, #{adminName}, #{adminPassword}, #{role})
+	</insert>
+
+    <select id="selectOneAdminByAdminName" resultType="com.change.changesrmsback.entity.Admin">
+		select * from `admin` where adminName=#{adminName}
+	</select>
+
+</mapper>

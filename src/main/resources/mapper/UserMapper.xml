@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.changesrmsback.mapper.UserMapper">
+
+	<insert id="insertOneUser">
+		insert into `user` (id, userName, userPassword)
+			values (#{id}, #{userName}, #{userPassword})
+	</insert>
+
+	<select id="selectOneUserByUserName" resultType="com.change.changesrmsback.entity.User">
+		select * from `user` where userName=#{userName}
+	</select>
+
+</mapper>
