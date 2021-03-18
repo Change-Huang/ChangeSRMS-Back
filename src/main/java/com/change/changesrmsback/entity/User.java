@@ -7,6 +7,7 @@ package com.change.changesrmsback.entity;
 public class User {
     private long id;
     private String userName;
+    private String userNickname;
     private String userPassword;
     private int version;
 
@@ -24,6 +25,14 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserNickname() {
+        return userNickname;
+    }
+
+    public void setUserNickname(String userNickname) {
+        this.userNickname = userNickname;
     }
 
     public String getUserPassword() {
@@ -47,6 +56,7 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
+                ", userNickname='" + userNickname + '\'' +
                 ", userPassword='" + userPassword + '\'' +
                 ", version=" + version +
                 '}';

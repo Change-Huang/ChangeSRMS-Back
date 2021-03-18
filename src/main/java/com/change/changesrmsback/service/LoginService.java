@@ -131,8 +131,10 @@ public class LoginService {
     }
 
     /**
-     * 用户注册<br> 先进行数据验证，如果都没有问题则将数据封装，之后保存到数据库
+     * 用户注册<br>
+     * 先进行数据验证，如果都没有问题则将数据封装，之后保存到数据库
      * @param username              前端填入的用户名
+     * @param nickname              前端填入的用户姓名
      * @param password              前端填入的密码
      * @param rePassword            前端填入的确认密码
      * @param verifyMailCode        前端填入的邮箱验证码
@@ -140,7 +142,7 @@ public class LoginService {
      * @param sessionRegistMail     已经发送验证码的邮箱
      * @throws Exception 如果表单有错误则抛出异常
      */
-    public void regist(String username, String password, String rePassword, String verifyMailCode,
+    public void regist(String username, String nickname, String password, String rePassword, String verifyMailCode,
                        String sessionMailVerifyCode, String sessionRegistMail)
             throws Exception {
         // 数据验证
@@ -150,6 +152,9 @@ public class LoginService {
         if (username == null || "".equals(username) || !username.equals(sessionRegistMail)) {
             throw new Exception("输入的用户名有误");
         }
+        if (nickname == null || "".equals(nickname) || nickname.length() > 12) {
+            throw new Exception("输入的姓名有误");
+        }
         if (password == null || "".equals(password) || !password.equals(rePassword)
                 || password.length() < 6 || password.length() > 16) {
             throw new Exception("输入的密码有误");
@@ -158,6 +163,7 @@ public class LoginService {
         User user = new User();
         user.setId(new SnowflakeIdWorker(0, 0).nextId());
         user.setUserName(username);
+        user.setUserNickname(nickname);
         user.setUserPassword(password);
         // 写入数据库
         int result = userMapper.insertOneUser(user);

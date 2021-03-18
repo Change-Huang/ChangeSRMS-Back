@@ -12,7 +12,7 @@ public interface AdminMapper {
 
     /**
      * 向Admin表中插入一行
-     * @param admin 要求至少包含id，adminName，adminPassword，role
+     * @param admin 要求至少包含id，adminName，adminNickname，adminPassword，role
      * @return 返回改变的表的行数，正常情况下为1
      */
     int insertOneAdmin(Admin admin);

@@ -3,13 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.change.changesrmsback.mapper.UserMapper">
 
-	<insert id="insertOneUser">
-		insert into `user` (id, userName, userPassword)
-			values (#{id}, #{userName}, #{userPassword})
-	</insert>
+    <insert id="insertOneUser">
+        insert into `user` (id, userName, userNickname, userPassword)
+        values (#{id}, #{userName}, #{userNickname}, #{userPassword})
+    </insert>
 
-	<select id="selectOneUserByUserName" resultType="com.change.changesrmsback.entity.User">
-		select * from `user` where userName=#{userName}
-	</select>
+    <select id="selectOneUserByUserName" resultType="com.change.changesrmsback.entity.User">
+        select *
+        from `user`
+        where userName = #{userName}
+    </select>
 
 </mapper>

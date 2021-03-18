@@ -12,7 +12,7 @@ public interface UserMapper {
 
     /**
      * 向User表中插入一行
-     * @param user 要求至少包含id，userName，userPassword
+     * @param user 要求至少包含id，userName，userNickname，userPassword
      * @return 返回改变的表的行数，正常情况下为1
      */
     int insertOneUser(User user);

@@ -119,6 +119,7 @@ public class LoginController {
      * 用户注册
      * @param requestMap 前端传入json数据自动转化，要求包括<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --username，用户要注册的邮箱<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --nickname，用户的姓名<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --password，用户的密码<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --rePassword，确认密码<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --verifyMailCode，正确的邮箱验证码
@@ -134,6 +135,7 @@ public class LoginController {
     @RequestMapping("/regist")
     public Map<String, Object> regist(@RequestBody Map<String, String> requestMap, HttpSession session) {
         String username = requestMap.get("username");
+        String nickname = requestMap.get("nickname");
         String password = requestMap.get("password");
         String rePassword = requestMap.get("rePassword");
         String verifyMailCode = requestMap.get("verifyMailCode");
@@ -141,7 +143,8 @@ public class LoginController {
         String sessionRegistMail = (String) session.getAttribute("sessionRegistMail");
         ResponseMessage responseMessage = new ResponseMessage();
         try {
-            loginService.regist(username, password, rePassword, verifyMailCode, sessionMailVerifyCode, sessionRegistMail);
+            loginService.regist(username, nickname, password, rePassword, verifyMailCode,
+                    sessionMailVerifyCode, sessionRegistMail);
         } catch (Exception e) {
             responseMessage.setStatus(400);
             responseMessage.setMsg(e.getMessage());

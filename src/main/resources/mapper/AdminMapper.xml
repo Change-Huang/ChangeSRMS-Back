@@ -4,12 +4,14 @@
 <mapper namespace="com.change.changesrmsback.mapper.AdminMapper">
 
     <insert id="insertOneAdmin">
-		insert into `admin` (id, adminName, adminPassword, role)
-			values (#{id}, #{adminName}, #{adminPassword}, #{role})
-	</insert>
+        insert into `admin` (id, adminName, adminNickname, adminPassword, role)
+        values (#{id}, #{adminName}, #{adminNickname}, #{adminPassword}, #{role})
+    </insert>
 
     <select id="selectOneAdminByAdminName" resultType="com.change.changesrmsback.entity.Admin">
-		select * from `admin` where adminName=#{adminName}
-	</select>
+        select *
+        from `admin`
+        where adminName = #{adminName}
+    </select>
 
 </mapper>
