@@ -4,7 +4,6 @@ import com.change.changesrmsback.entity.ResponseMessage;
 import com.change.changesrmsback.service.LoginService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +17,6 @@ import java.util.Map;
  * @author Change
  */
 @RestController
-@CrossOrigin
 @RequestMapping("/login")
 public class LoginController {
 
@@ -67,6 +65,7 @@ public class LoginController {
         String verifyCode = requestMap.get("verifyCode");
         String role = requestMap.get("role");
         String sessionVerifyCode = (String) session.getAttribute("sessionVerifyCode");
+        System.out.println(sessionVerifyCode);
         ResponseMessage responseMessage = new ResponseMessage();
         try {
             loginService.login(username, password, verifyCode, role, sessionVerifyCode);

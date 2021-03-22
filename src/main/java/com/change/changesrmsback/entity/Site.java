@@ -3,14 +3,13 @@ package com.change.changesrmsback.entity;
 import lombok.Data;
 
 /**
- * 系统用户
+ * 场地实体类
  * @author Change
  */
 @Data
-public class User {
+public class Site {
     private long id;
-    private String userName;
-    private String userNickname;
-    private String userPassword;
+    private String siteName;
+    private Boolean hasKeys;
     private int version;
 }
