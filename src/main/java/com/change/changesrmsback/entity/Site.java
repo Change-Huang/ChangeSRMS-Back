@@ -10,6 +10,9 @@ import lombok.Data;
 public class Site {
     private long id;
     private String siteName;
+    private String location;
+    private Integer seat;
     private Boolean hasKeys;
-    private int version;
+    private Boolean isLent;
+    private Integer version;
 }

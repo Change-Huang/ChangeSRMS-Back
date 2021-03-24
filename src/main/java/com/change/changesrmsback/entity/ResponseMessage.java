@@ -11,7 +11,7 @@ import java.util.Map;
  */
 @Data
 public class ResponseMessage {
-    private int status;
+    private Integer status;
     private String msg;
     private Map<String, Object> data = new HashMap<>();
 

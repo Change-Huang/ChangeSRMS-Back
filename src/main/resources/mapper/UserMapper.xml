@@ -12,6 +12,7 @@
         select *
         from `user`
         where userName = #{userName}
+          and isDelete is false
     </select>
 
 </mapper>

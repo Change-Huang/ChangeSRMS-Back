@@ -59,13 +59,12 @@ public class LoginController {
      *         --空
      */
     @RequestMapping("/login")
-    public Map<String, Object> login(@RequestBody Map<String, String> requestMap, HttpSession session) {
-        String username = requestMap.get("username");
-        String password = requestMap.get("password");
-        String verifyCode = requestMap.get("verifyCode");
-        String role = requestMap.get("role");
+    public Map<String, Object> login(@RequestBody Map<String, Object> requestMap, HttpSession session) {
+        String username = (String) requestMap.get("username");
+        String password = (String) requestMap.get("password");
+        String verifyCode = (String) requestMap.get("verifyCode");
+        String role = (String) requestMap.get("role");
         String sessionVerifyCode = (String) session.getAttribute("sessionVerifyCode");
-        System.out.println(sessionVerifyCode);
         ResponseMessage responseMessage = new ResponseMessage();
         try {
             loginService.login(username, password, verifyCode, role, sessionVerifyCode);
@@ -96,10 +95,10 @@ public class LoginController {
      *         --空
      */
     @RequestMapping("/mailVerifyCode")
-    public Map<String, Object> mailVerifyCode(@RequestBody Map<String, String> requestMap, HttpSession session) {
+    public Map<String, Object> mailVerifyCode(@RequestBody Map<String, Object> requestMap, HttpSession session) {
         ResponseMessage responseMessage = new ResponseMessage();
         String code;
-        String username = requestMap.get("username");
+        String username = (String) requestMap.get("username");
         try {
             code = loginService.mailVerifyCode(username);
         } catch (Exception e) {
@@ -132,12 +131,12 @@ public class LoginController {
      *         --空
      */
     @RequestMapping("/regist")
-    public Map<String, Object> regist(@RequestBody Map<String, String> requestMap, HttpSession session) {
-        String username = requestMap.get("username");
-        String nickname = requestMap.get("nickname");
-        String password = requestMap.get("password");
-        String rePassword = requestMap.get("rePassword");
-        String verifyMailCode = requestMap.get("verifyMailCode");
+    public Map<String, Object> regist(@RequestBody Map<String, Object> requestMap, HttpSession session) {
+        String username = (String) requestMap.get("username");
+        String nickname = (String) requestMap.get("nickname");
+        String password = (String) requestMap.get("password");
+        String rePassword = (String) requestMap.get("rePassword");
+        String verifyMailCode = (String) requestMap.get("verifyMailCode");
         String sessionMailVerifyCode = (String) session.getAttribute("sessionMailVerifyCode");
         String sessionRegistMail = (String) session.getAttribute("sessionRegistMail");
         ResponseMessage responseMessage = new ResponseMessage();
@@ -169,9 +168,9 @@ public class LoginController {
      *         --空
      */
     @RequestMapping("/forget")
-    public Map<String, Object> forget(@RequestBody Map<String, String> requestMap, HttpSession session) {
-        String username = requestMap.get("username");
-        String verifyCode = requestMap.get("verifyCode");
+    public Map<String, Object> forget(@RequestBody Map<String, Object> requestMap, HttpSession session) {
+        String username = (String) requestMap.get("username");
+        String verifyCode = (String) requestMap.get("verifyCode");
         String sessionVerifyCode = (String) session.getAttribute("sessionVerifyCode");
         ResponseMessage responseMessage = new ResponseMessage();
         try {

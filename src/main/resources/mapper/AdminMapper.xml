@@ -12,6 +12,7 @@
         select *
         from `admin`
         where adminName = #{adminName}
+          and isDelete is false
     </select>
 
 </mapper>

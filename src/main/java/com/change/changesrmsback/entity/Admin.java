@@ -13,5 +13,5 @@ public class Admin {
     private String adminNickname;
     private String adminPassword;
     private String role;
-    private int version;
+    private Integer version;
 }

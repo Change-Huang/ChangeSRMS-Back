@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.change.changesrmsback.mapper.SiteMapper">
+
+    <select id="selectSiteList" resultType="com.change.changesrmsback.entity.Site">
+        select id, siteName, location, seat, hasKeys, isLent
+        from `site`
+        where isDelete is false
+        <if test="query != null and query != ''">
+            and ( siteName like #{query}
+            or location like #{query} )
+        </if>
+        <if test="page.pageStart != null and page.pageSize != null">
+            limit #{page.pageStart},#{page.pageSize}
+        </if>
+    </select>
+
+    <select id="selectSiteCount" resultType="java.lang.Integer">
+        select count(*)
+        from `site`
+        where isDelete is false
+        <if test="query != null and query != ''">
+            and ( siteName like #{query}
+            or location like #{query} )
+        </if>
+    </select>
+
+</mapper>
