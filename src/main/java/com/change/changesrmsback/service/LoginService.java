@@ -11,7 +11,6 @@ import com.change.changesrmsback.utils.VerifyCode;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -25,36 +24,28 @@ import java.io.IOException;
 @Service
 public class LoginService {
 
-    /** 用户登录持久层 */
+    /** 用户登录数据访问层 */
     private UserMapper userMapper;
-    /** 管理员持久层 */
+
+    /** 管理员数据访问层 */
     private AdminMapper adminMapper;
 
-    // todo 如果后面没用到就删了
-    /** 邮件发送类 */
-    private JavaMailSender javaMailSender;
     /** 邮件发送工具封装 */
     private SendMail sendMail;
 
-    /** 用户登录持久层注入 */
+    /** 用户登录数据访问层注入 */
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
 
-    /** 管理员持久层注入 */
+    /** 管理员数据访问层注入 */
     @Autowired
     public void setAdminMapper(AdminMapper adminMapper) {
         this.adminMapper = adminMapper;
     }
 
-    /** 邮件发送类注入 */
-    @Autowired
-    public void setJavaMailSender(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
-
-    /** 邮件发送工具封装 */
+    /** 邮件发送工具注入 */
     @Autowired
     public void setSendMail(SendMail sendMail) {
         this.sendMail = sendMail;

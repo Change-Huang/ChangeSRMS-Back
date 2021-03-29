@@ -4,26 +4,50 @@
 <mapper namespace="com.change.changesrmsback.mapper.SiteMapper">
 
     <select id="selectSiteList" resultType="com.change.changesrmsback.entity.Site">
-        select id, siteName, location, seat, hasKeys, isLent
-        from `site`
-        where isDelete is false
+        SELECT id, siteName, location, seat, hasKeys, isLent, version
+        FROM `site`
+        WHERE isDelete IS FALSE
         <if test="query != null and query != ''">
-            and ( siteName like #{query}
-            or location like #{query} )
+            AND (siteName LIKE #{query} OR location LIKE #{query})
         </if>
         <if test="page.pageStart != null and page.pageSize != null">
-            limit #{page.pageStart},#{page.pageSize}
+            limit #{page.pageStart}, #{page.pageSize}
         </if>
     </select>
 
     <select id="selectSiteCount" resultType="java.lang.Integer">
-        select count(*)
-        from `site`
-        where isDelete is false
+        SELECT count(*)
+        FROM `site`
+        WHERE `isDelete` is FALSE
         <if test="query != null and query != ''">
-            and ( siteName like #{query}
-            or location like #{query} )
+            and (siteName like #{query} or location like #{query})
         </if>
     </select>
+
+    <insert id="insertOneSite">
+        INSERT INTO `site` (`id`, `siteName`, `location`, `seat`, `hasKeys`)
+        VALUES (#{id}, #{siteName}, #{location}, #{seat}, #{hasKeys})
+    </insert>
+
+    <update id="updateOneSite">
+        UPDATE `site`
+        SET `siteName`=#{siteName},
+            `location`=#{location},
+            `seat`=#{seat},
+            `hasKeys`=#{hasKeys},
+            version=version + 1
+        WHERE `id` = #{id}
+          and version = #{version}
+          AND `isDelete` IS FALSE
+    </update>
+
+    <update id="deleteOneSite">
+        UPDATE `site`
+        SET `isDelete`= TRUE,
+            version=version + 1
+        WHERE `id` = #{id}
+          and version = #{version}
+          AND `isDelete` IS FALSE
+    </update>
 
 </mapper>

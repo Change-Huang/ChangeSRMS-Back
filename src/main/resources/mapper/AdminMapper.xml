@@ -15,4 +15,13 @@
           and isDelete is false
     </select>
 
+    <update id="updatePasswordById">
+        update `admin`
+        set adminPassword=#{password},
+            version=version + 1
+        where id = #{id}
+          and version = #{version}
+          and isDelete is false
+    </update>
+
 </mapper>

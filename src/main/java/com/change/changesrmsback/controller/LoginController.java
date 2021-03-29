@@ -60,15 +60,18 @@ public class LoginController {
      */
     @RequestMapping("/login")
     public Map<String, Object> login(@RequestBody Map<String, Object> requestMap, HttpSession session) {
+        // 取值
         String username = (String) requestMap.get("username");
         String password = (String) requestMap.get("password");
         String verifyCode = (String) requestMap.get("verifyCode");
         String role = (String) requestMap.get("role");
         String sessionVerifyCode = (String) session.getAttribute("sessionVerifyCode");
+        // 传值和操作
         ResponseMessage responseMessage = new ResponseMessage();
         try {
             loginService.login(username, password, verifyCode, role, sessionVerifyCode);
         } catch (AuthenticationException e) {
+            // 封装结果、返回
             responseMessage.setStatus(400);
             responseMessage.setMsg("用户名或密码错误");
             return responseMessage.toMap();
@@ -96,12 +99,15 @@ public class LoginController {
      */
     @RequestMapping("/mailVerifyCode")
     public Map<String, Object> mailVerifyCode(@RequestBody Map<String, Object> requestMap, HttpSession session) {
-        ResponseMessage responseMessage = new ResponseMessage();
+        // 取值
         String code;
         String username = (String) requestMap.get("username");
+        // 传值和操作
+        ResponseMessage responseMessage = new ResponseMessage();
         try {
             code = loginService.mailVerifyCode(username);
         } catch (Exception e) {
+            // 封装和返回
             responseMessage.setStatus(400);
             responseMessage.setMsg(e.getMessage());
             return responseMessage.toMap();
@@ -132,6 +138,7 @@ public class LoginController {
      */
     @RequestMapping("/regist")
     public Map<String, Object> regist(@RequestBody Map<String, Object> requestMap, HttpSession session) {
+        // 取值
         String username = (String) requestMap.get("username");
         String nickname = (String) requestMap.get("nickname");
         String password = (String) requestMap.get("password");
@@ -139,11 +146,13 @@ public class LoginController {
         String verifyMailCode = (String) requestMap.get("verifyMailCode");
         String sessionMailVerifyCode = (String) session.getAttribute("sessionMailVerifyCode");
         String sessionRegistMail = (String) session.getAttribute("sessionRegistMail");
+        // 封装和操作
         ResponseMessage responseMessage = new ResponseMessage();
         try {
             loginService.regist(username, nickname, password, rePassword, verifyMailCode,
                     sessionMailVerifyCode, sessionRegistMail);
         } catch (Exception e) {
+            // 封装和返回
             responseMessage.setStatus(400);
             responseMessage.setMsg(e.getMessage());
             return responseMessage.toMap();
@@ -169,13 +178,16 @@ public class LoginController {
      */
     @RequestMapping("/forget")
     public Map<String, Object> forget(@RequestBody Map<String, Object> requestMap, HttpSession session) {
+        // 取值
         String username = (String) requestMap.get("username");
         String verifyCode = (String) requestMap.get("verifyCode");
         String sessionVerifyCode = (String) session.getAttribute("sessionVerifyCode");
+        // 传值和操作
         ResponseMessage responseMessage = new ResponseMessage();
         try {
             loginService.forget(username, verifyCode, sessionVerifyCode);
         } catch (Exception e) {
+            // 返回
             responseMessage.setStatus(400);
             responseMessage.setMsg(e.getMessage());
             return responseMessage.toMap();
@@ -196,8 +208,10 @@ public class LoginController {
      */
     @RequestMapping("/logout")
     public Map<String, Object> logout() {
-        ResponseMessage responseMessage = new ResponseMessage();
+        // 操作
         loginService.logout();
+        // 封装和返回
+        ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setStatus(200);
         responseMessage.setMsg("退出登录成功");
         return responseMessage.toMap();

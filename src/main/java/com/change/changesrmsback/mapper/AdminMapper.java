@@ -2,6 +2,7 @@ package com.change.changesrmsback.mapper;
 
 import com.change.changesrmsback.entity.Admin;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 数据访问层，对接数据库Admin表
@@ -23,4 +24,6 @@ public interface AdminMapper {
      * @return 返回查询到的一整个Admin对象
      */
     Admin selectOneAdminByAdminName(String adminName);
+
+    int updatePasswordById(@Param("id") Long id, @Param("password") String newPassword, @Param("version") int version);
 }

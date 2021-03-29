@@ -4,15 +4,72 @@
 <mapper namespace="com.change.changesrmsback.mapper.UserMapper">
 
     <insert id="insertOneUser">
-        insert into `user` (id, userName, userNickname, userPassword)
-        values (#{id}, #{userName}, #{userNickname}, #{userPassword})
+        INSERT INTO `user` (`id`, `userName`, `userNickname`, `userPassword`)
+        VALUES (#{id}, #{userName}, #{userNickname}, #{userPassword})
     </insert>
 
     <select id="selectOneUserByUserName" resultType="com.change.changesrmsback.entity.User">
-        select *
-        from `user`
-        where userName = #{userName}
-          and isDelete is false
+        SELECT *
+        FROM `user`
+        WHERE `userName` = #{userName}
+          AND `isDelete` IS FALSE
     </select>
 
+    <update id="updatePasswordById">
+        UPDATE `user`
+        SET `userPassword`=#{password},
+            version=version + 1
+        WHERE `id` = #{id}
+          AND `isDelete` IS FALSE
+          and version = #{version}
+    </update>
+
+    <select id="selectUserList" resultType="com.change.changesrmsback.entity.User">
+        SELECT user.id, user.userName, user.userNickname, user.version, IFNULL(historyNum.sum, 0) `useSum`
+        FROM `user`
+        LEFT JOIN
+        (
+        SELECT userId, COUNT(*) `sum`
+        FROM history
+        WHERE isDelete IS FALSE
+        GROUP BY userId
+        ) historyNum
+        ON historyNum.userId = user.id
+        WHERE user.isDelete IS FALSE
+        <if test="query != null and query != ''">
+            AND (user.userName LIKE #{query} OR user.userNickname LIKE #{query})
+        </if>
+        <if test="page.pageStart != null and page.pageSize != null">
+            limit #{page.pageStart}, #{page.pageSize}
+        </if>
+    </select>
+
+    <select id="selectUserCount" resultType="java.lang.Integer">
+        select count(*)
+        from `user`
+        where isDelete is false
+        <if test="query != null and query != ''">
+            AND
+            (userName LIKE #{query}
+            OR userNickname LIKE #{query})
+        </if>
+    </select>
+
+    <update id="updateOneUser">
+        UPDATE `user`
+        SET `userNickname`=#{userNickname},
+            version=version + 1
+        WHERE `id` = #{id}
+          and version = #{version}
+          AND `isDelete` IS FALSE
+    </update>
+
+    <update id="deleteOneUser">
+        UPDATE `user`
+        SET `isDelete`= TRUE,
+            version=version + 1
+        WHERE `id` = #{id}
+          and version = #{version}
+          AND `isDelete` IS FALSE
+    </update>
 </mapper>

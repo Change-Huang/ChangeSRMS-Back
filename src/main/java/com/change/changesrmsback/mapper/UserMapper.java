@@ -1,7 +1,11 @@
 package com.change.changesrmsback.mapper;
 
+import com.change.changesrmsback.entity.Page;
 import com.change.changesrmsback.entity.User;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 数据访问层，对接数据库User表
@@ -23,4 +27,14 @@ public interface UserMapper {
      * @return 返回查询到的一整个User对象
      */
     User selectOneUserByUserName(String userName);
+
+    int updatePasswordById(@Param("id") Long id, @Param("password") String newPassword, @Param("version") int version);
+
+    List<User> selectUserList(@Param("page") Page page, @Param("query") String query);
+
+    int selectUserCount(String query);
+
+    int updateOneUser(User user);
+
+    int deleteOneUser(@Param("id") Long id, @Param("version") int version);
 }
