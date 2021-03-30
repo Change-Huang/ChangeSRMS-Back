@@ -1,9 +1,9 @@
 package com.change.changesrmsback.controller;
 
+import com.change.changesrmsback.entity.Admin;
 import com.change.changesrmsback.entity.Page;
 import com.change.changesrmsback.entity.ResponseMessage;
-import com.change.changesrmsback.entity.Site;
-import com.change.changesrmsback.service.SiteManageService;
+import com.change.changesrmsback.service.AdminManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * 场地管理控制器
+ * 管理员管理器的控制器
  * @author Change
  */
 @RestController
-@RequestMapping("/siteManage")
-public class SiteManageController {
+@RequestMapping("/adminManage")
+public class AdminManageController {
 
-    /** 场地管理操作业务逻辑 */
-    private SiteManageService siteManageService;
+    /** 管理员管理业务逻辑 */
+    private AdminManageService adminManageService;
 
-    /** 场地管理操作业务逻辑的注入 */
+    /** 管理员管理业务逻辑自动注入 */
     @Autowired
-    public void setSiteManageService(SiteManageService siteManageService) {
-        this.siteManageService = siteManageService;
+    public void setAdminManageService(AdminManageService adminManageService) {
+        this.adminManageService = adminManageService;
     }
 
     /**
-     * 场地管理时请求场地列表接口
+     * 管理员管理时请求管理员列表接口
      * @param requestMap 前端传入json数据自动转化，要求包括<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --query，要模糊查询的的内容，为空则查询所有<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --pageNum，分页查询的页码，为空则查询所有<br>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -40,11 +40,11 @@ public class SiteManageController {
      *         msg：<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *         --状态码解释信息<br>
      *         data：<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *         --siteList，查询的结果，场地列表<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *         --siteList，查询的结果，管理员列表<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *         --total，此次查询的总数
      */
-    @RequestMapping("/siteList")
-    public Map<String, Object> siteList(@RequestBody Map<String, Object> requestMap) {
+    @RequestMapping("/adminList")
+    public Map<String, Object> adminList(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
         Map<String, Object> data;
         try {
@@ -54,7 +54,7 @@ public class SiteManageController {
             page.setPageNum((int) requestMap.get("pageNum"));
             page.setPageSize((int) requestMap.get("pageSize"));
             // 传值和操作
-            data = siteManageService.siteList(page, query);
+            data = adminManageService.adminList(page, query);
         } catch (Exception e) {
             // 结果的封装和返回
             responseMessage.setStatus(400);
@@ -68,12 +68,12 @@ public class SiteManageController {
     }
 
     /**
-     * 场地管理时添加场地接口
+     * 管理员管理时添加管理员接口
      * @param requestMap 前端传入json数据自动转化，要求包括<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --siteName，场地名称，不能为空，最多18个字符<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --location，场地的地址或位置，可为空<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --seat，场地能容纳的人数，不能为空<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --hasKeys，场地借用是否需要钥匙，不能为空
+     *                   --adminName，用户名，不能为空，最多18个字符<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --adminNickname，用户姓名，不能为空<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --adminPassword，管理员密码，不能为空<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --role，管理员角色，不能为空
      * @return status：<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *         --200，添加成功<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *         --400，添加失败<br>
@@ -82,18 +82,18 @@ public class SiteManageController {
      *         data：<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *         --空
      */
-    @RequestMapping("/addSite")
-    public Map<String, Object> addSite(@RequestBody Map<String, Object> requestMap) {
+    @RequestMapping("/addAdmin")
+    public Map<String, Object> addAdmin(@RequestBody Map<String, Object> requestMap) {
         // 取值和封装
         ResponseMessage responseMessage = new ResponseMessage();
         try {
-            Site site = new Site();
-            site.setSiteName((String) requestMap.get("siteName"));
-            site.setLocation((String) requestMap.get("location"));
-            site.setSeat((Integer) requestMap.get("seat"));
-            site.setHasKeys((Boolean) requestMap.get("hasKeys"));
+            Admin admin = new Admin();
+            admin.setAdminName((String) requestMap.get("adminName"));
+            admin.setAdminNickname((String) requestMap.get("adminNickname"));
+            admin.setAdminPassword((String) requestMap.get("adminPassword"));
+            admin.setRole((String) requestMap.get("role"));
             // 操作
-            siteManageService.addSite(site);
+            adminManageService.addAdmin(admin);
         } catch (Exception e) {
             // 封装和返回
             responseMessage.setStatus(400);
@@ -106,13 +106,11 @@ public class SiteManageController {
     }
 
     /**
-     * 场地管理时编辑场地接口
+     * 管理员管理时编辑管理员接口
      * @param requestMap 前端传入json数据自动转化，要求包括<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --id，要修改的场地id，应为已经存在数据库的id<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --siteName，场地名称，不能为空，最多18个字符<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --location，场地的地址或位置，可为空<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --seat，场地能容纳的人数，不能为空<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --hasKeys，场地借用是否需要钥匙，不能为空<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --id，要修改的管理员id，应为已经存在数据库的id<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --adminNickname，用户姓名，不能为空<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --role，管理员角色，不能为空<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --version，数据库的乐观锁标识，防止修改时冲突
      * @return status：<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *         --200，编辑成功<br>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -122,20 +120,18 @@ public class SiteManageController {
      *         data：<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *         --空
      */
-    @RequestMapping("/editSite")
-    public Map<String, Object> editSite(@RequestBody Map<String, Object> requestMap) {
+    @RequestMapping("/editAdmin")
+    public Map<String, Object> editAdmin(@RequestBody Map<String, Object> requestMap) {
         // 取值和封装
         ResponseMessage responseMessage = new ResponseMessage();
         try {
-            Site site = new Site();
-            site.setId(Long.parseLong((String) requestMap.get("id")));
-            site.setSiteName((String) requestMap.get("siteName"));
-            site.setLocation((String) requestMap.get("location"));
-            site.setSeat((Integer) requestMap.get("seat"));
-            site.setHasKeys((Boolean) requestMap.get("hasKeys"));
-            site.setVersion((Integer) requestMap.get("version"));
+            Admin admin = new Admin();
+            admin.setId(Long.parseLong((String) requestMap.get("id")));
+            admin.setAdminNickname((String) requestMap.get("adminNickname"));
+            admin.setRole((String) requestMap.get("role"));
+            admin.setVersion((Integer) requestMap.get("version"));
             // 操作
-            siteManageService.editSite(site);
+            adminManageService.editAdmin(admin);
         } catch (Exception e) {
             // 封装和返回
             responseMessage.setStatus(400);
@@ -148,9 +144,9 @@ public class SiteManageController {
     }
 
     /**
-     * 场地管理时删除场地接口
+     * 管理员管理时删除管理员接口
      * @param requestMap 前端传入json数据自动转化，要求包括<br>&nbsp;&nbsp;&nbsp;&nbsp;
-     *                   --id，要删除的场地id，应为已经存在数据库的id<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --id，要删除的管理员id，应为已经存在数据库的id<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --version，数据库的乐观锁标识，防止修改时冲突
      * @return status：<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *         --200，删除成功<br>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -160,14 +156,14 @@ public class SiteManageController {
      *         data：<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *         --空
      */
-    @RequestMapping("/deleteSite")
-    public Map<String, Object> deleteSite(@RequestBody Map<String, Object> requestMap) {
+    @RequestMapping("/deleteAdmin")
+    public Map<String, Object> deleteAdmin(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
         try {
             Long id = Long.parseLong((String) requestMap.get("id"));
             int version = (Integer) requestMap.get("version");
             // 操作
-            siteManageService.deleteSite(id, version);
+            adminManageService.deleteAdmin(id, version);
         } catch (Exception e) {
             // 封装和返回
             responseMessage.setStatus(400);
@@ -178,4 +174,5 @@ public class SiteManageController {
         responseMessage.setMsg("删除成功");
         return responseMessage.toMap();
     }
+
 }

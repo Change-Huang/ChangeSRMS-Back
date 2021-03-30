@@ -24,4 +24,44 @@
           and isDelete is false
     </update>
 
+    <select id="selectAdminList" resultType="com.change.changesrmsback.entity.Admin">
+        SELECT id, adminName, adminNickname, role, version
+        FROM `admin`
+        WHERE isDelete IS FALSE
+        <if test="query != null and query != ''">
+            AND (adminName LIKE #{query} OR adminNickname LIKE #{query})
+        </if>
+        <if test="page.pageStart != null and page.pageSize != null">
+            limit #{page.pageStart}, #{page.pageSize}
+        </if>
+    </select>
+
+    <select id="selectAdminCount" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM `admin`
+        WHERE `isDelete` is FALSE
+        <if test="query != null and query != ''">
+            AND (adminName LIKE #{query} OR adminNickname LIKE #{query})
+        </if>
+    </select>
+
+    <update id="updateOneAdmin">
+        UPDATE `admin`
+        SET `adminNickname`=#{adminNickname},
+            `role`=#{role},
+            version=version + 1
+        WHERE `id` = #{id}
+          and version = #{version}
+          AND `isDelete` IS FALSE
+    </update>
+
+    <update id="deleteOneAdmin">
+        UPDATE `admin`
+        SET `isDelete`= TRUE,
+            version=version + 1
+        WHERE `id` = #{id}
+          and version = #{version}
+          AND `isDelete` IS FALSE
+    </update>
+
 </mapper>
