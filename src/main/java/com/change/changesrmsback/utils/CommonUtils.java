@@ -1,6 +1,7 @@
 package com.change.changesrmsback.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -52,5 +53,22 @@ public class CommonUtils {
             result.append(codes.charAt(index));
         }
         return result.toString();
+    }
+
+    /**
+     * 根据日期字符串生成Date
+     * @param date 要求格式为yyyy-MM-dd hh:mm:ss
+     * @return 格式化好的date
+     */
+    public static Date formateDate(String date) {
+        Calendar calendar = Calendar.getInstance();
+        int year = Integer.parseInt(date.substring(0, 4));
+        int month = Integer.parseInt(date.substring(5, 7));
+        int day = Integer.parseInt(date.substring(8, 10));
+        int hour = Integer.parseInt(date.substring(11, 13));
+        int minute = Integer.parseInt(date.substring(14, 16));
+        int second = Integer.parseInt(date.substring(17, 19));
+        calendar.set(year, month, day, hour, minute, second);
+        return calendar.getTime();
     }
 }

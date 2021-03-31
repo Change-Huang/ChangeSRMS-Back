@@ -4,19 +4,24 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
+import java.util.Date;
+
 /**
- * 场地实体类
+ * 借用历史实体类
  * @author Change
  */
 @Data
-public class Site {
+public class History {
     @JsonSerialize(using = ToStringSerializer.class)
     private long id;
-    private String siteName;
-    private String location;
-    private Integer seat;
-    private Boolean hasKeys;
-    private Boolean isLent;
+    private long siteId;
+    private long userId;
+    private String reason;
+    private Date beginTime;
+    private Date endTime;
+    private long generalAdminId;
+    private long superAdminId;
+    private long loanKeyId;
+    private long returnKeyId;
     private Integer version;
-    private Integer reservationTimes;
 }

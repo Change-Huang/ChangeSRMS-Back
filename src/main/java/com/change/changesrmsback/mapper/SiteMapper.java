@@ -50,4 +50,12 @@ public interface SiteMapper {
      * @return 成功返回1，不成功返回0
      */
     int deleteOneSite(@Param("id") Long id, @Param("version") int version);
+
+    /**
+     * 以列表的方式查询场地，用于预约，支持分页和模糊，模糊查询为场地名称和位置模糊
+     * @param page  可为null，若要分页，必须包含pageSize和pageStart属性
+     * @param query 可为null，若要模糊查询，则不能为空
+     * @return 符合条件的list列表
+     */
+    List<Site> selectSiteListForReservation(@Param("page") Page page, @Param("query") String query);
 }

@@ -50,4 +50,25 @@
           AND `isDelete` IS FALSE
     </update>
 
+    <select id="selectSiteListForReservation" resultType="com.change.changesrmsback.entity.Site">
+        SELECT id, siteName, location, seat, hasKeys, IFNULL(historyNum.sum, 0) `reservationTimes`
+        FROM `site`
+        LEFT JOIN
+        (
+        SELECT siteId, COUNT(*) `sum`
+        FROM `history`
+        WHERE isDelete IS FALSE
+        and loanState=2
+        GROUP BY siteId
+        ) historyNum
+        ON historyNum.siteId = site.id
+        WHERE isDelete IS FALSE
+        <if test="query != null and query != ''">
+            AND (siteName LIKE #{query} OR location LIKE #{query})
+        </if>
+        <if test="page.pageStart != null and page.pageSize != null">
+            limit #{page.pageStart}, #{page.pageSize}
+        </if>
+    </select>
+
 </mapper>
