@@ -35,7 +35,12 @@ public class AdminManageService {
      */
     public Map<String, Object> adminList(Page page, String query) {
         // 计算查询分行的起始
-        page.setPageStart((page.getPageNum() - 1) * page.getPageSize());
+        if (page.getPageNum() == 0 || page.getPageSize() == 0) {
+            page.setPageNum(null);
+            page.setPageSize(null);
+        } else {
+            page.setPageStart((page.getPageNum() - 1) * page.getPageSize());
+        }
         // 整合模糊查询的通配符%，查询
         List<Admin> adminList = adminMapper.selectAdminList(page, "%" + query + "%");
         // 总数

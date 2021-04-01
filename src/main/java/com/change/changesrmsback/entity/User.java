@@ -1,5 +1,6 @@
 package com.change.changesrmsback.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class User {
     private String userName;
     private String userNickname;
     private String userPassword;
-    private Integer useSum;
     private Integer version;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Integer useSum;
 }

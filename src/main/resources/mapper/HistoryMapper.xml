@@ -8,4 +8,41 @@
         VALUES (#{id}, #{beginTime}, #{endTime}, #{reason}, #{siteId}, #{userId})
     </insert>
 
+    <select id="selectHistoryListByUserId" resultType="com.change.changesrmsback.entity.History">
+        SELECT history.id, history.reason, history.beginTime, history.endTime, history.loanState,
+        history.keyState, history.version, site.siteName
+        FROM `history`, `site`
+        WHERE `history`.`isDelete` is FALSE
+        and `site`.isDelete is false
+        and history.siteId = site.id
+        and `history`.userId = #{userId}
+        order by id desc
+        <if test="page.pageStart != null and page.pageSize != null">
+            limit #{page.pageStart}, #{page.pageSize}
+        </if>
+    </select>
+
+    <select id="selectHistoryCountByUserId" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM `history`
+        WHERE `isDelete` is FALSE
+          and userId = #{userId}
+    </select>
+
+    <select id="selectOneHistory" resultType="com.change.changesrmsback.entity.History">
+        SELECT *
+        FROM `history`
+        WHERE `id` = #{id}
+          AND `isDelete` IS FALSE
+    </select>
+
+    <update id="deleteOneHistory">
+        UPDATE `history`
+        SET `isDelete`= TRUE,
+            version=version + 1
+        WHERE `id` = #{id}
+          and version = #{version}
+          AND `isDelete` IS FALSE
+    </update>
+
 </mapper>
