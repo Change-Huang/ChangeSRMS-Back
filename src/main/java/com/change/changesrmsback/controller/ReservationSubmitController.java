@@ -28,7 +28,7 @@ public class ReservationSubmitController {
     }
 
     /**
-     * 场地管理时请求场地列表接口
+     * 申请借用场地时请求场地列表接口
      * @param requestMap 前端传入json数据自动转化，要求包括<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --query，要模糊查询的的内容，为空则查询所有<br>&nbsp;&nbsp;&nbsp;&nbsp;
      *                   --pageNum，分页查询的页码，为空则查询所有<br>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -66,6 +66,21 @@ public class ReservationSubmitController {
         return responseMessage.toMap();
     }
 
+    /**
+     * 申请借用场地时提交申请请求列表接口
+     * @param requestMap 前端传入json数据自动转化，要求包括<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --begin，借用的开始时间，格式为“yyyy-MM-dd hh-mm”<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --end，借用的结束时间，格式为“yyyy-MM-dd hh-mm”<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --reason，借用场地的理由<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *                   --siteId，要借用的场地的id
+     * @return status：<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *         --200，提交成功<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *         --400，提交失败<br>
+     *         msg：<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *         --状态码解释信息<br>
+     *         data：<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *         --空
+     */
     @RequestMapping("/submit")
     public Map<String, Object> submit(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();

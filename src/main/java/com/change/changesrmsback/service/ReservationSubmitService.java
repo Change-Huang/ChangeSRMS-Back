@@ -61,6 +61,15 @@ public class ReservationSubmitService {
         return result;
     }
 
+    /**
+     * 用户提交场地借用申请<br>
+     * 将开始和结束时间格式化为date类，并添加用户id和此次借用历史的id
+     * @param begin  借用的开始时间，格式为“yyyy-MM-dd hh-mm”
+     * @param end    借用的结束时间，格式为“yyyy-MM-dd hh-mm”
+     * @param reason 借用原因
+     * @param siteId 借用的场地id
+     * @throws Exception 数据格式不对或操作数据库错误等等
+     */
     public void submitReservation(String begin, String end, String reason, Long siteId) throws Exception {
         History history = new History();
         history.setBeginTime(CommonUtils.formateDate(begin + ":00"));
