@@ -50,4 +50,44 @@ public interface HistoryMapper {
      * @return 成功返回1，不成功返回0
      */
     int deleteOneHistory(@Param("id") Long id, @Param("version") int version);
+
+    /**
+     * 第一次审核，查询所需要审核的列表
+     * @param page 分页，可为空
+     * @return 查询到的列表
+     */
+    List<History> selectFirstCheck(Page page);
+
+    /**
+     * 第一次审核，查询所需要审核的列表的数量
+     * @return 查询到的数量
+     */
+    int selectFirstCheckCount();
+
+    /**
+     * 第一次审核提交
+     * @param history 包含审核的id，管理员的id，审核后loandState的值，version
+     * @return 成功返回1，不成功返回0
+     */
+    int firstCheckUpdate(History history);
+
+    /**
+     * 第二次审核，查询所需要审核的列表
+     * @param page 分页，可为空
+     * @return 查询到的列表
+     */
+    List<History> selectSecondCheck(Page page);
+
+    /**
+     * 第二次审核，查询所需要审核的列表的数量
+     * @return 查询到的数量
+     */
+    int selectSecondCheckCount();
+
+    /**
+     * 第二次审核提交
+     * @param history 包含审核的id，管理员的id，审核后loandState的值，version
+     * @return 成功返回1，不成功返回0
+     */
+    int secondCheckUpdate(History history);
 }

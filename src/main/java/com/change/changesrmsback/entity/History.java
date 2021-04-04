@@ -36,5 +36,8 @@ public class History {
     private int keyState;
     private Integer version;
 
+    private String userNickname;
+    private String adminNickname;
+    private String superAdminNickname;
     private String siteName;
 }

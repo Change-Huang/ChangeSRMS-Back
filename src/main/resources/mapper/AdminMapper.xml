@@ -4,30 +4,30 @@
 <mapper namespace="com.change.changesrmsback.mapper.AdminMapper">
 
     <insert id="insertOneAdmin">
-        insert into `admin` (id, adminName, adminNickname, adminPassword, role)
-        values (#{id}, #{adminName}, #{adminNickname}, #{adminPassword}, #{role})
+        INSERT INTO `admin` (`id`, `adminName`, `adminNickname`, `adminPassword`, `role`)
+        VALUES (#{id}, #{adminName}, #{adminNickname}, #{adminPassword}, #{role})
     </insert>
 
     <select id="selectOneAdminByAdminName" resultType="com.change.changesrmsback.entity.Admin">
-        select *
-        from `admin`
-        where adminName = #{adminName}
-          and isDelete is false
+        SELECT *
+        FROM `admin`
+        WHERE `adminName` = #{adminName}
+          AND `isDelete` IS FALSE
     </select>
 
     <update id="updatePasswordById">
-        update `admin`
-        set adminPassword=#{password},
-            version=version + 1
-        where id = #{id}
-          and version = #{version}
-          and isDelete is false
+        UPDATE `admin`
+        SET `adminPassword`=#{password},
+            `version`=`version` + 1
+        WHERE `id` = #{id}
+          AND `version` = #{version}
+          AND `isDelete` IS FALSE
     </update>
 
     <select id="selectAdminList" resultType="com.change.changesrmsback.entity.Admin">
-        SELECT id, adminName, adminNickname, role, version
+        SELECT `id`, `adminName`, `adminNickname`, `role`, `version`
         FROM `admin`
-        WHERE isDelete IS FALSE
+        WHERE `isDelete` IS FALSE
         <if test="query != null and query != ''">
             AND (adminName LIKE #{query} OR adminNickname LIKE #{query})
         </if>
@@ -39,7 +39,7 @@
     <select id="selectAdminCount" resultType="java.lang.Integer">
         SELECT count(*)
         FROM `admin`
-        WHERE `isDelete` is FALSE
+        WHERE `isDelete` IS FALSE
         <if test="query != null and query != ''">
             AND (adminName LIKE #{query} OR adminNickname LIKE #{query})
         </if>
@@ -49,18 +49,18 @@
         UPDATE `admin`
         SET `adminNickname`=#{adminNickname},
             `role`=#{role},
-            version=version + 1
+            `version`=`version` + 1
         WHERE `id` = #{id}
-          and version = #{version}
+          AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
 
     <update id="deleteOneAdmin">
         UPDATE `admin`
         SET `isDelete`= TRUE,
-            version=version + 1
+            `version`=`version` + 1
         WHERE `id` = #{id}
-          and version = #{version}
+          AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
 

@@ -18,24 +18,28 @@
     <update id="updatePasswordById">
         UPDATE `user`
         SET `userPassword`=#{password},
-            version=version + 1
+            `version`=`version` + 1
         WHERE `id` = #{id}
           AND `isDelete` IS FALSE
-          and version = #{version}
+          AND `version` = #{version}
     </update>
 
     <select id="selectUserList" resultType="com.change.changesrmsback.entity.User">
-        SELECT user.id, user.userName, user.userNickname, user.version, IFNULL(historyNum.sum, 0) `useSum`
+        SELECT `user`.`id`,
+        `user`.`userName`,
+        `user`.`userNickname`,
+        `user`.`version`,
+        IFNULL(`historyNum`.`sum`, 0) `useSum`
         FROM `user`
         LEFT JOIN
         (
-        SELECT userId, COUNT(*) `sum`
-        FROM history
-        WHERE isDelete IS FALSE
-        GROUP BY userId
-        ) historyNum
-        ON historyNum.userId = user.id
-        WHERE user.isDelete IS FALSE
+        SELECT `userId`, COUNT(*) `sum`
+        FROM `history`
+        WHERE `isDelete` IS FALSE
+        GROUP BY `userId`
+        ) `historyNum`
+        ON `historyNum`.`userId` = `user`.`id`
+        WHERE `user`.`isDelete` IS FALSE
         <if test="query != null and query != ''">
             AND (user.userName LIKE #{query} OR user.userNickname LIKE #{query})
         </if>
@@ -45,9 +49,9 @@
     </select>
 
     <select id="selectUserCount" resultType="java.lang.Integer">
-        select count(*)
-        from `user`
-        where isDelete is false
+        SELECT count(*)
+        FROM `user`
+        WHERE `isDelete` IS FALSE
         <if test="query != null and query != ''">
             AND
             (userName LIKE #{query}
@@ -58,18 +62,18 @@
     <update id="updateOneUser">
         UPDATE `user`
         SET `userNickname`=#{userNickname},
-            version=version + 1
+            `version`=`version` + 1
         WHERE `id` = #{id}
-          and version = #{version}
+          AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
 
     <update id="deleteOneUser">
         UPDATE `user`
         SET `isDelete`= TRUE,
-            version=version + 1
+            `version`=`version` + 1
         WHERE `id` = #{id}
-          and version = #{version}
+          AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
 </mapper>
