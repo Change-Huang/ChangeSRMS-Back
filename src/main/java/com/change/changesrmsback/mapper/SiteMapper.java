@@ -15,6 +15,13 @@ import java.util.List;
 public interface SiteMapper {
 
     /**
+     * 根据id查询场地
+     * @param id 要查询的id
+     * @return 查询到的id结果
+     */
+    Site selectOneSiteById(Long id);
+
+    /**
      * 以列表的方式查询场地，支持分页和模糊，模糊查询为场地名称和位置模糊
      * @param page  可为null，若要分页，必须包含pageSize和pageStart属性
      * @param query 可为null，若要模糊查询，则不能为空

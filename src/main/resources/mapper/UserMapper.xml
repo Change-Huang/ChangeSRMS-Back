@@ -23,22 +23,22 @@
           AND `isDelete` IS FALSE
           AND `version` = #{version}
     </update>
-
+    
     <select id="selectUserList" resultType="com.change.changesrmsback.entity.User">
         SELECT `user`.`id`,
-        `user`.`userName`,
-        `user`.`userNickname`,
-        `user`.`version`,
-        IFNULL(`historyNum`.`sum`, 0) `useSum`
+               `user`.`userName`,
+               `user`.`userNickname`,
+               `user`.`version`,
+               IFNULL(`historyNum`.`sum`, 0) `useSum`
         FROM `user`
-        LEFT JOIN
-        (
-        SELECT `userId`, COUNT(*) `sum`
-        FROM `history`
-        WHERE `isDelete` IS FALSE
-        GROUP BY `userId`
-        ) `historyNum`
-        ON `historyNum`.`userId` = `user`.`id`
+             LEFT JOIN
+                 (
+                     SELECT `userId`, COUNT(*) `sum`
+                     FROM `history`
+                     WHERE `isDelete` IS FALSE
+                     GROUP BY `userId`
+                 ) `historyNum`
+             ON `historyNum`.`userId` = `user`.`id`
         WHERE `user`.`isDelete` IS FALSE
         <if test="query != null and query != ''">
             AND (user.userName LIKE #{query} OR user.userNickname LIKE #{query})
@@ -53,12 +53,10 @@
         FROM `user`
         WHERE `isDelete` IS FALSE
         <if test="query != null and query != ''">
-            AND
-            (userName LIKE #{query}
-            OR userNickname LIKE #{query})
+            AND (userName LIKE #{query} OR userNickname LIKE #{query})
         </if>
     </select>
-
+    
     <update id="updateOneUser">
         UPDATE `user`
         SET `userNickname`=#{userNickname},
@@ -67,7 +65,7 @@
           AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
-
+    
     <update id="deleteOneUser">
         UPDATE `user`
         SET `isDelete`= TRUE,

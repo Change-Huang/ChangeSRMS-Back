@@ -90,7 +90,7 @@ public class VerifyCode {
      */
     private char randomChar() {
         //验证码可选字符
-        String codes = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String codes = "23456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ";
         int index = r.nextInt(codes.length());
         return codes.charAt(index);
     }

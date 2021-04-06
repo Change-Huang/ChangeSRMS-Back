@@ -18,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class AdminRealm extends AuthorizingRealm {
 
+    /** 管理员的数据访问层 */
     private AdminMapper adminMapper;
 
+    /** 管理员的数据访问层注入 */
     @Autowired
     public void setAdminMapper(AdminMapper adminMapper) {
         this.adminMapper = adminMapper;
@@ -46,11 +48,9 @@ public class AdminRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
             throws AuthenticationException {
-        System.out.println("======管理员认证======before");
         if (!"admin".equals(((UsernamePasswordRoleToken) token).getRole())) {
             return null;
         }
-        System.out.println("======管理员认证======");
         String username = token.getPrincipal().toString();
         Admin admin = adminMapper.selectOneAdminByAdminName(username);
         return new SimpleAuthenticationInfo(admin, admin.getAdminPassword(), getName());
@@ -66,11 +66,9 @@ public class AdminRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection collection) {
-        System.out.println("======管理员授权======before");
         if (!collection.getRealmNames().contains("AdminRealm")) {
             return null;
         }
-        System.out.println("======管理员授权======");
         Admin admin = (Admin) collection.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addRole(admin.getRole());

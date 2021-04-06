@@ -3,6 +3,7 @@ package com.change.changesrmsback.controller;
 import com.change.changesrmsback.entity.Page;
 import com.change.changesrmsback.entity.ResponseMessage;
 import com.change.changesrmsback.service.FirstCheckService;
+import com.change.changesrmsback.utils.RoleTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +45,7 @@ public class FirstCheckController {
     @RequestMapping("/firstCheckList")
     public Map<String, Object> firstCheckList(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleGeneral())) return responseMessage.toMap();
         Map<String, Object> data;
         try {
             // 取值和封装
@@ -81,6 +83,7 @@ public class FirstCheckController {
     @RequestMapping("/firstCheckSubmit")
     public Map<String, Object> firstCheckSubmit(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleGeneral())) return responseMessage.toMap();
         try {
             // 取值和封装
             Long id = Long.parseLong((String) requestMap.get("id"));

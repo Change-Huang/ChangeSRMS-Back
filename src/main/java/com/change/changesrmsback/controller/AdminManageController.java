@@ -4,6 +4,7 @@ import com.change.changesrmsback.entity.Admin;
 import com.change.changesrmsback.entity.Page;
 import com.change.changesrmsback.entity.ResponseMessage;
 import com.change.changesrmsback.service.AdminManageService;
+import com.change.changesrmsback.utils.RoleTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +47,7 @@ public class AdminManageController {
     @RequestMapping("/adminList")
     public Map<String, Object> adminList(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleSuper())) return responseMessage.toMap();
         Map<String, Object> data;
         try {
             // 取值和封装
@@ -86,6 +88,7 @@ public class AdminManageController {
     public Map<String, Object> addAdmin(@RequestBody Map<String, Object> requestMap) {
         // 取值和封装
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleSuper())) return responseMessage.toMap();
         try {
             Admin admin = new Admin();
             admin.setAdminName((String) requestMap.get("adminName"));

@@ -90,4 +90,37 @@ public interface HistoryMapper {
      * @return 成功返回1，不成功返回0
      */
     int secondCheckUpdate(History history);
+
+    /**
+     * 查询要管理的钥匙列表
+     * @param page 分页
+     * @return 查询到的列表
+     */
+    List<History> selectKeyManageList(Page page);
+
+    /**
+     * 查询要管理的钥匙列表的总数
+     * @return 查询到的数量
+     */
+    int selectKeyManageCount();
+
+    /**
+     * 借出钥匙，改变表
+     * @param history 至少包含loanKeyId、id、version
+     * @return 成功返回1，失败返回0
+     */
+    int loanKey(History history);
+
+    /**
+     * 归还钥匙，改变表
+     * @param history 至少包含loanKeyId、id、version
+     * @return 成功返回1，失败返回0
+     */
+    int returnKey(History history);
+
+    /**
+     * 查询今天、过去三天、以后三天的借用数量
+     * @return 查询到的结果，按时间排序
+     */
+    List<Integer> selectSucceedNearThreeDays();
 }

@@ -3,6 +3,7 @@ package com.change.changesrmsback.controller;
 import com.change.changesrmsback.entity.Page;
 import com.change.changesrmsback.entity.ResponseMessage;
 import com.change.changesrmsback.service.SecondCheckService;
+import com.change.changesrmsback.utils.RoleTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +45,7 @@ public class SecondCheckController {
     @RequestMapping("/secondCheckList")
     public Map<String, Object> secondCheckList(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleSuper())) return responseMessage.toMap();
         Map<String, Object> data;
         try {
             // 取值和封装
@@ -81,6 +83,7 @@ public class SecondCheckController {
     @RequestMapping("/secondCheckSubmit")
     public Map<String, Object> secondCheckSubmit(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleSuper())) return responseMessage.toMap();
         try {
             // 取值和封装
             Long id = Long.parseLong((String) requestMap.get("id"));

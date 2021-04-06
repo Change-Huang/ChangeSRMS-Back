@@ -80,14 +80,12 @@ public class LoginService {
      * @param sessionVerifyCode 正确的验证码
      * @throws Exception 抛出异常的原因包括验证码、用户名、密码输入不正确
      */
-    public void login(String username, String password, String verifyCode,
-                      String role, String sessionVerifyCode)
+    public void login(String username, String password, String verifyCode, String role, String sessionVerifyCode)
             throws Exception {
         // 数据校验
-        // todo 开发阶段不校验验证码
-//        if (verifyCode == null || "".equals(verifyCode) || !verifyCode.equalsIgnoreCase(sessionVerifyCode)) {
-//            throw new Exception("输入的验证码有误");
-//        }
+        if (verifyCode == null || "".equals(verifyCode) || !verifyCode.equalsIgnoreCase(sessionVerifyCode)) {
+            throw new Exception("输入的验证码有误");
+        }
         if (username == null || "".equals(username)) {
             throw new Exception("用户名不能为空");
         }
@@ -188,16 +186,10 @@ public class LoginService {
         sendMail.sendForget(username, user.getUserPassword());
     }
 
+    /**
+     * 退出登录，直接调用shiro的logout方法
+     */
     public void logout() {
         SecurityUtils.getSubject().logout();
-    }
-
-    /**
-     * 判断该用户是否已经认证登录
-     * @return 已经登录返回true，没有则返回false
-     */
-    // todo 如果最后用不上就删了
-    public boolean isLogin() {
-        return SecurityUtils.getSubject().isAuthenticated();
     }
 }

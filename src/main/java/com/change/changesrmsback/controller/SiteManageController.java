@@ -4,6 +4,7 @@ import com.change.changesrmsback.entity.Page;
 import com.change.changesrmsback.entity.ResponseMessage;
 import com.change.changesrmsback.entity.Site;
 import com.change.changesrmsback.service.SiteManageService;
+import com.change.changesrmsback.utils.RoleTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,13 +47,14 @@ public class SiteManageController {
     @RequestMapping("/siteList")
     public Map<String, Object> siteList(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleGeneral())) return responseMessage.toMap();
         Map<String, Object> data;
         try {
             // 取值和封装
-            String query = (String) requestMap.get("query");
             Page page = new Page();
             page.setPageNum((int) requestMap.get("pageNum"));
             page.setPageSize((int) requestMap.get("pageSize"));
+            String query = (String) requestMap.get("query");
             // 传值和操作
             data = siteManageService.siteList(page, query);
         } catch (Exception e) {
@@ -86,6 +88,7 @@ public class SiteManageController {
     public Map<String, Object> addSite(@RequestBody Map<String, Object> requestMap) {
         // 取值和封装
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleGeneral())) return responseMessage.toMap();
         try {
             Site site = new Site();
             site.setSiteName((String) requestMap.get("siteName"));
@@ -126,6 +129,7 @@ public class SiteManageController {
     public Map<String, Object> editSite(@RequestBody Map<String, Object> requestMap) {
         // 取值和封装
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleGeneral())) return responseMessage.toMap();
         try {
             Site site = new Site();
             site.setId(Long.parseLong((String) requestMap.get("id")));
@@ -163,9 +167,10 @@ public class SiteManageController {
     @RequestMapping("/deleteSite")
     public Map<String, Object> deleteSite(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleGeneral())) return responseMessage.toMap();
         try {
-            Long id = Long.parseLong((String) requestMap.get("id"));
             int version = (Integer) requestMap.get("version");
+            Long id = Long.parseLong((String) requestMap.get("id"));
             // 操作
             siteManageService.deleteSite(id, version);
         } catch (Exception e) {

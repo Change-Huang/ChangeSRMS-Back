@@ -68,7 +68,7 @@ public class CommonUtils {
         int hour = Integer.parseInt(date.substring(11, 13));
         int minute = Integer.parseInt(date.substring(14, 16));
         int second = Integer.parseInt(date.substring(17, 19));
-        calendar.set(year, month, day, hour, minute, second);
+        calendar.set(year, month - 1, day, hour, minute, second);
         return calendar.getTime();
     }
 }

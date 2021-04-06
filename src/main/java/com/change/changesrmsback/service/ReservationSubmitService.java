@@ -81,6 +81,11 @@ public class ReservationSubmitService {
         history.setEndTime(CommonUtils.formateDate(end + ":00"));
         history.setReason(reason);
         history.setSiteId(siteId);
+        if (siteMapper.selectOneSiteById(siteId).getHasKeys()) {
+            history.setKeyState(0);
+        } else {
+            history.setKeyState(3);
+        }
         history.setUserId(((User) SecurityUtils.getSubject().getPrincipal()).getId());
         history.setId(new SnowflakeIdWorker(0, 0).nextId());
         int result = historyMapper.insertOneHistory(history);

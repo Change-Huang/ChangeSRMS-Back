@@ -11,12 +11,19 @@ import lombok.Data;
  */
 @Data
 public class User {
+
+    /** 用户的id */
     @JsonSerialize(using = ToStringSerializer.class)
     private long id;
+    /** 用户的用户名 */
     private String userName;
+    /** 用户的姓名 */
     private String userNickname;
+    /** 用户的密码 */
     private String userPassword;
+    /** 乐观锁 */
     private Integer version;
+    /** 用户借用的次数 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Integer useSum;
 }

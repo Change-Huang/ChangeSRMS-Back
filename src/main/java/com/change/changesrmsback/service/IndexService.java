@@ -3,12 +3,18 @@ package com.change.changesrmsback.service;
 import com.change.changesrmsback.entity.Admin;
 import com.change.changesrmsback.entity.User;
 import com.change.changesrmsback.mapper.AdminMapper;
+import com.change.changesrmsback.mapper.HistoryMapper;
 import com.change.changesrmsback.mapper.UserMapper;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +30,9 @@ public class IndexService {
     /** 管理员数据访问层 */
     private AdminMapper adminMapper;
 
+    /** 借用历史数据访问层 */
+    private HistoryMapper historyMapper;
+
     /** 用户登录数据访问层注入 */
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
@@ -34,6 +43,12 @@ public class IndexService {
     @Autowired
     public void setAdminMapper(AdminMapper adminMapper) {
         this.adminMapper = adminMapper;
+    }
+
+    /** 借用历史数据访问层注入 */
+    @Autowired
+    public void setHistoryMapper(HistoryMapper historyMapper) {
+        this.historyMapper = historyMapper;
     }
 
     /**
@@ -129,5 +144,24 @@ public class IndexService {
             ((Admin) principal).setAdminPassword(newAdmin.getAdminPassword());
             ((Admin) principal).setVersion(newAdmin.getVersion());
         }
+    }
+
+    /**
+     * 获取今天、前面3天、后面3天的日期，以及那个日期被借用的次数
+     * @return 包含dateList日期数列、countList数量数列
+     */
+    public Map<String, Object> collectDate() {
+        Map<String, Object> result = new HashMap<>();
+        List<String> dateList = new ArrayList<>();
+        for (int i = -3; i < 4; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, i);
+            Date time = calendar.getTime();
+            dateList.add(new SimpleDateFormat("M月d日").format(time));
+        }
+        List<Integer> countList = historyMapper.selectSucceedNearThreeDays();
+        result.put("dateList", dateList);
+        result.put("countList", countList);
+        return result;
     }
 }

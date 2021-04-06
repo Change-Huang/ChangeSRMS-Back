@@ -2,7 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.change.changesrmsback.mapper.SiteMapper">
-
+    
+    <select id="selectOneSiteById" resultType="com.change.changesrmsback.entity.Site">
+        SELECT *
+        FROM `site`
+        WHERE `isDelete` IS FALSE
+          AND `id` = #{id}
+    </select>
+    
     <select id="selectSiteList" resultType="com.change.changesrmsback.entity.Site">
         SELECT `id`, `siteName`, `location`, `seat`, `hasKeys`, `isLent`, `version`
         FROM `site`
@@ -14,7 +21,7 @@
             limit #{page.pageStart}, #{page.pageSize}
         </if>
     </select>
-
+    
     <select id="selectSiteCount" resultType="java.lang.Integer">
         SELECT count(*)
         FROM `site`
@@ -23,12 +30,12 @@
             and (siteName like #{query} or location like #{query})
         </if>
     </select>
-
+    
     <insert id="insertOneSite">
         INSERT INTO `site` (`id`, `siteName`, `location`, `seat`, `hasKeys`)
         VALUES (#{id}, #{siteName}, #{location}, #{seat}, #{hasKeys})
     </insert>
-
+    
     <update id="updateOneSite">
         UPDATE `site`
         SET `siteName`=#{siteName},
@@ -40,7 +47,7 @@
           AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
-
+    
     <update id="deleteOneSite">
         UPDATE `site`
         SET `isDelete`= TRUE,
@@ -49,19 +56,19 @@
           AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
-
+    
     <select id="selectSiteListForReservation" resultType="com.change.changesrmsback.entity.Site">
         SELECT `id`, `siteName`, `location`, `seat`, `hasKeys`, IFNULL(`historyNum`.`sum`, 0) `reservationTimes`
         FROM `site`
-        LEFT JOIN
-        (
-        SELECT `siteId`, COUNT(*) `sum`
-        FROM `history`
-        WHERE `isDelete` IS FALSE
-        AND `loanState` = 2
-        GROUP BY `siteId`
-        ) `historyNum`
-        ON `historyNum`.`siteId` = `site`.`id`
+             LEFT JOIN
+                 (
+                     SELECT `siteId`, COUNT(*) `sum`
+                     FROM `history`
+                     WHERE `isDelete` IS FALSE
+                       AND `loanState` = 2
+                     GROUP BY `siteId`
+                 ) `historyNum`
+             ON `historyNum`.`siteId` = `site`.`id`
         WHERE `isDelete` IS FALSE
         <if test="query != null and query != ''">
             AND (siteName LIKE #{query} OR location LIKE #{query})

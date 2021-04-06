@@ -5,24 +5,24 @@
     
     <insert id="insertOneHistory">
         INSERT
-        INTO `history` (`id`, `beginTime`, `endTime`, `reason`, `siteId`, `userId`)
-        VALUES (#{id}, #{beginTime}, #{endTime}, #{reason}, #{siteId}, #{userId})
+        INTO `history` (`id`, `beginTime`, `endTime`, `reason`, `siteId`, `userId`, `keyState`)
+        VALUES (#{id}, #{beginTime}, #{endTime}, #{reason}, #{siteId}, #{userId}, #{keyState})
     </insert>
     
     <select id="selectHistoryListByUserId" resultType="com.change.changesrmsback.entity.History">
         SELECT `history`.`id`,
-        `history`.`reason`,
-        `history`.`beginTime`,
-        `history`.`endTime`,
-        `history`.`loanState`,
-        `history`.`keyState`,
-        `history`.`version`,
-        `site`.`siteName`
+               `history`.`reason`,
+               `history`.`beginTime`,
+               `history`.`endTime`,
+               `history`.`loanState`,
+               `history`.`keyState`,
+               `history`.`version`,
+               `site`.`siteName`
         FROM `history`, `site`
         WHERE `history`.`isDelete` IS FALSE
-        AND `site`.`isDelete` IS FALSE
-        AND `history`.`siteId` = `site`.`id`
-        AND `history`.`userId` = #{userId}
+          AND `site`.`isDelete` IS FALSE
+          AND `history`.`siteId` = `site`.`id`
+          AND `history`.`userId` = #{userId}
         ORDER BY `history`.`id` DESC
         <if test="page.pageStart != null and page.pageSize != null">
             LIMIT #{page.pageStart}, #{page.pageSize}
@@ -54,30 +54,29 @@
     
     <select id="selectFirstCheck" resultType="com.change.changesrmsback.entity.History">
         SELECT `history`.`id`,
-        `user`.`userNickname`,
-        `admin`.`adminNickname`,
-        `site`.`siteName`,
-        `history`.`beginTime`,
-        `history`.`endTime`,
-        `history`.`loanState`,
-        `history`.`reason`,
-        `history`.`version`
-        FROM `history` LEFT JOIN `admin` ON `history`.`generalAdminId`=`admin`.`id`,
-        `site`,
-        `user`
+               `user`.`userNickname`,
+               `admin`.`adminNickname`,
+               `site`.`siteName`,
+               `history`.`beginTime`,
+               `history`.`endTime`,
+               `history`.`loanState`,
+               `history`.`reason`,
+               `history`.`version`
+        FROM `history`
+             LEFT JOIN `admin` ON `history`.`generalAdminId` = `admin`.`id`,
+             `site`,
+             `user`
         WHERE `history`.`isDelete` IS FALSE
-        AND `site`.`isDelete` IS FALSE
-        AND `user`.`isDelete` IS FALSE
-        AND (`admin`.`isDelete` IS NULL
-        OR `admin`.`isDelete` IS FALSE )
-        AND `history`.`userId` = `user`.`id`
-        AND `history`.`siteId` = `site`.`id`
-        AND `history`.`superAdminId` IS NULL
+          AND `site`.`isDelete` IS FALSE
+          AND `user`.`isDelete` IS FALSE
+          AND (`admin`.`isDelete` IS NULL
+            OR `admin`.`isDelete` IS FALSE)
+          AND `history`.`userId` = `user`.`id`
+          AND `history`.`siteId` = `site`.`id`
+          AND `history`.`superAdminId` IS NULL
         ORDER BY `history`.`id` DESC
         <if test="pageStart != null and pageSize != null">
-            LIMIT
-            #{pageStart},
-            #{pageSize}
+            LIMIT #{pageStart}, #{pageSize}
         </if>
     </select>
     
@@ -106,36 +105,36 @@
     
     <select id="selectSecondCheck" resultType="com.change.changesrmsback.entity.History">
         SELECT `history`.`id`,
-        `user`.`userNickname`,
-        `general`.`adminNickname`,
-        `super`.`adminNickname` AS `superAdminNickname`,
-        `site`.`siteName`,
-        `history`.`beginTime`,
-        `history`.`endTime`,
-        `history`.`loanState`,
-        `history`.`reason`,
-        `history`.`version`
+               `user`.`userNickname`,
+               `general`.`adminNickname`,
+               `super`.`adminNickname` AS `superAdminNickname`,
+               `site`.`siteName`,
+               `history`.`beginTime`,
+               `history`.`endTime`,
+               `history`.`loanState`,
+               `history`.`reason`,
+               `history`.`version`
         FROM `history`
-        LEFT JOIN `admin` AS `general` ON `history`.`generalAdminId` = `general`.`id`
-        LEFT JOIN `admin` AS `super` ON `history`.`superAdminId` = `super`.`id`,
-        `site`,
-        `user`
+             LEFT JOIN `admin` AS `general` ON `history`.`generalAdminId` = `general`.`id`
+             LEFT JOIN `admin` AS `super` ON `history`.`superAdminId` = `super`.`id`,
+                                  `site`,
+                                  `user`
         WHERE `history`.`isDelete` IS FALSE
-        AND `site`.`isDelete` IS FALSE
-        AND `user`.`isDelete` IS FALSE
-        AND (`general`.`isDelete` IS NULL
-        OR `general`.`isDelete` IS FALSE)
-        AND (`super`.`isDelete` IS NULL
-        OR `super`.`isDelete` IS FALSE)
-        AND `history`.`userId` = `user`.`id`
-        AND `history`.`siteId` = `site`.`id`
-        AND `history`.`generalAdminId` IS NOT NULL
-        AND `history`.`loanState` != 0
+          AND `site`.`isDelete` IS FALSE
+          AND `user`.`isDelete` IS FALSE
+          AND (`general`.`isDelete` IS NULL
+            OR `general`.`isDelete` IS FALSE)
+          AND (`super`.`isDelete` IS NULL
+            OR `super`.`isDelete` IS FALSE)
+          AND `history`.`userId` = `user`.`id`
+          AND `history`.`siteId` = `site`.`id`
+          AND `history`.`generalAdminId` IS NOT NULL
+          AND `history`.`loanState` != 0
+          AND (`history`.`keyState` = 0
+            OR `history`.`keyState` = 3)
         ORDER BY `history`.`id` DESC
         <if test="pageStart != null and pageSize != null">
-            LIMIT
-            #{pageStart},
-            #{pageSize}
+            LIMIT #{pageStart}, #{pageSize}
         </if>
     </select>
     
@@ -151,6 +150,7 @@
           AND `history`.`siteId` = `site`.`id`
           AND `history`.`generalAdminId` IS NOT NULL
           AND `history`.`loanState` != 0
+          AND `history`.`keyState` = 0
     </select>
     
     <update id="secondCheckUpdate">
@@ -162,5 +162,97 @@
           AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
+    
+    <select id="selectKeyManageList" resultType="com.change.changesrmsback.entity.History">
+        SELECT `history`.`id`,
+               `user`.`userNickname`,
+               `site`.`siteName`,
+               `loanKey`.`adminNickname`   AS `loanKeyAdmin`,
+               `returnKey`.`adminNickname` AS `returnKeyAdmin`,
+               `history`.`beginTime`,
+               `history`.`endTime`,
+               `history`.`keyState`,
+               `history`.`version`
+        FROM `history`
+             LEFT JOIN `admin` AS `loanKey`
+                 ON `history`.`loanKeyId` = `loanKey`.`id`
+             LEFT JOIN `admin` AS `returnKey`
+                 ON `history`.`returnKeyId` = `returnKey`.`id`,
+             `site`,
+             `user`
+        WHERE `history`.`isDelete` IS FALSE
+          AND `site`.`isDelete` IS FALSE
+          AND `user`.`isDelete` IS FALSE
+          AND (`loanKey`.`isDelete` IS NULL
+            OR `loanKey`.`isDelete` IS FALSE)
+          AND (`returnKey`.`isDelete` IS NULL
+            OR `returnKey`.`isDelete` IS FALSE)
+          AND `history`.`userId` = `user`.`id`
+          AND `history`.`siteId` = `site`.`id`
+          AND `history`.`loanState` = 2
+        ORDER BY `history`.`id` DESC
+        <if test="pageStart != null and pageSize != null">
+            LIMIT #{pageStart}, #{pageSize}
+        </if>
+    </select>
+    
+    <select id="selectKeyManageCount" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM `history`,
+             `site`,
+             `user`
+        WHERE `history`.`isDelete` IS FALSE
+          AND `site`.`isDelete` IS FALSE
+          AND `user`.`isDelete` IS FALSE
+          AND `history`.`userId` = `user`.`id`
+          AND `history`.`siteId` = `site`.`id`
+          AND `history`.`loanState` = 2
+    </select>
+    
+    <update id="loanKey">
+        UPDATE `history`
+        SET `loanKeyId`= #{loanKeyId},
+            `keyState`= 1,
+            `version`=`version` + 1
+        WHERE `id` = #{id}
+          AND `version` = #{version}
+          AND `isDelete` IS FALSE
+          AND `keyState` = 0
+    </update>
+    
+    <update id="returnKey">
+        UPDATE `history`
+        SET `returnKeyId`= #{returnKeyId},
+            `keyState`= 2,
+            `version`=`version` + 1
+        WHERE `id` = #{id}
+          AND `version` = #{version}
+          AND `isDelete` IS FALSE
+          AND `keyState` = 1
+    </update>
+    
+    <select id="selectSucceedNearThreeDays" resultType="java.lang.Integer">
+        SELECT COUNT(`history`.`id`) `count`
+        FROM (
+                 SELECT TO_DAYS(NOW()) - 3 `date`
+                 UNION
+                 SELECT TO_DAYS(NOW()) - 2 `date`
+                 UNION
+                 SELECT TO_DAYS(NOW()) - 1 `date`
+                 UNION
+                 SELECT TO_DAYS(NOW()) `date`
+                 UNION
+                 SELECT TO_DAYS(NOW()) + 1 `date`
+                 UNION
+                 SELECT TO_DAYS(NOW()) + 2 `date`
+                 UNION
+                 SELECT TO_DAYS(NOW()) + 3 `date`
+             ) `t`
+             LEFT JOIN `history`
+             ON `t`.`date` = TO_DAYS(`beginTime`)
+                 AND `history`.`loanState` = 2
+        GROUP BY `t`.`date`
+        ORDER BY `t`.`date`
+    </select>
 
 </mapper>

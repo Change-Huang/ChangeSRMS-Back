@@ -216,18 +216,4 @@ public class LoginController {
         responseMessage.setMsg("退出登录成功");
         return responseMessage.toMap();
     }
-
-    // todo 如果最后用不上就删了
-    @RequestMapping("/islogin")
-    public Map<String, Object> isLogin() {
-        ResponseMessage responseMessage = new ResponseMessage();
-        if (loginService.isLogin()) {
-            responseMessage.setStatus(200);
-            responseMessage.setMsg("已经登录");
-        } else {
-            responseMessage.setStatus(400);
-            responseMessage.setMsg("未登录");
-        }
-        return responseMessage.toMap();
-    }
 }

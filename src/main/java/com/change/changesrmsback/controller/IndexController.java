@@ -95,4 +95,23 @@ public class IndexController {
         responseMessage.setMsg("修改密码成功");
         return responseMessage.toMap();
     }
+
+    /**
+     * 获取近期预约与借用的汇总数据
+     * @return status：<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *         --200，成功<br>
+     *         msg：<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *         --状态码解释信息<br>
+     *         data：<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *         --dateList，获取近期7天的日期<br>&nbsp;&nbsp;&nbsp;&nbsp;
+     *         --countList，获取7天，每一天的数量
+     */
+    @RequestMapping("/collectDate")
+    public Map<String, Object> collectDate() {
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setStatus(200);
+        responseMessage.setMsg("获取成功");
+        responseMessage.setData(indexService.collectDate());
+        return responseMessage.toMap();
+    }
 }

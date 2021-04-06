@@ -3,6 +3,7 @@ package com.change.changesrmsback.controller;
 import com.change.changesrmsback.entity.Page;
 import com.change.changesrmsback.entity.ResponseMessage;
 import com.change.changesrmsback.service.ReservationSubmitService;
+import com.change.changesrmsback.utils.RoleTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +46,7 @@ public class ReservationSubmitController {
     @RequestMapping("/siteList")
     public Map<String, Object> siteList(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleUser())) return responseMessage.toMap();
         Map<String, Object> data;
         try {
             // 取值和封装
@@ -84,6 +86,7 @@ public class ReservationSubmitController {
     @RequestMapping("/submit")
     public Map<String, Object> submit(@RequestBody Map<String, Object> requestMap) {
         ResponseMessage responseMessage = new ResponseMessage();
+        if (responseMessage.getOneResponseMessage(RoleTest.hasRoleUser())) return responseMessage.toMap();
         Map<String, Object> data;
         try {
             // 取值和封装

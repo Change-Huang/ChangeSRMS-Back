@@ -18,8 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class UserRealm extends AuthorizingRealm {
 
+    /** 用户的数据访问层 */
     private UserMapper userMapper;
 
+    /** 用户的数据访问层注入 */
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
@@ -46,11 +48,9 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
             throws AuthenticationException {
-        System.out.println("======用户认证======before");
         if (!"user".equals(((UsernamePasswordRoleToken) token).getRole())) {
             return null;
         }
-        System.out.println("======用户认证======");
         String username = token.getPrincipal().toString();
         User user = userMapper.selectOneUserByUserName(username);
         return new SimpleAuthenticationInfo(user, user.getUserPassword(), getName());
@@ -65,11 +65,9 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection collection) {
-        System.out.println("======用户授权======before");
         if (!collection.getRealmNames().contains("UserRealm")) {
             return null;
         }
-        System.out.println("======用户授权======");
         collection.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.addRole("user");

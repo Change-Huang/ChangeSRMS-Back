@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.change.changesrmsback.mapper.AdminMapper">
-
+    
     <insert id="insertOneAdmin">
         INSERT INTO `admin` (`id`, `adminName`, `adminNickname`, `adminPassword`, `role`)
         VALUES (#{id}, #{adminName}, #{adminNickname}, #{adminPassword}, #{role})
     </insert>
-
+    
     <select id="selectOneAdminByAdminName" resultType="com.change.changesrmsback.entity.Admin">
         SELECT *
         FROM `admin`
@@ -23,7 +23,7 @@
           AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
-
+    
     <select id="selectAdminList" resultType="com.change.changesrmsback.entity.Admin">
         SELECT `id`, `adminName`, `adminNickname`, `role`, `version`
         FROM `admin`
@@ -35,7 +35,7 @@
             limit #{page.pageStart}, #{page.pageSize}
         </if>
     </select>
-
+    
     <select id="selectAdminCount" resultType="java.lang.Integer">
         SELECT count(*)
         FROM `admin`
@@ -44,7 +44,7 @@
             AND (adminName LIKE #{query} OR adminNickname LIKE #{query})
         </if>
     </select>
-
+    
     <update id="updateOneAdmin">
         UPDATE `admin`
         SET `adminNickname`=#{adminNickname},
@@ -54,7 +54,7 @@
           AND `version` = #{version}
           AND `isDelete` IS FALSE
     </update>
-
+    
     <update id="deleteOneAdmin">
         UPDATE `admin`
         SET `isDelete`= TRUE,

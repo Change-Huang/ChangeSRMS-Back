@@ -28,12 +28,6 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager);
-
-        // todo 拦截器先不配置
-//        Map<String, String> map = new HashMap<>();
-//        map.put("/login/logout", "roles[admin]");
-//        bean.setFilterChainDefinitionMap(map);
-
         return bean;
     }
 
