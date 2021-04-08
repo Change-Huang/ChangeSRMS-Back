@@ -87,7 +87,7 @@ public class HistoryManageController {
             Long id = Long.parseLong((String) requestMap.get("id"));
             int version = (Integer) requestMap.get("version");
             // 操作
-            historyManageService.deleteSite(id, version);
+            historyManageService.deleteHistory(id, version);
         } catch (Exception e) {
             // 封装和返回
             responseMessage.setStatus(400);

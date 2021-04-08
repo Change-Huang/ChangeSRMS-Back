@@ -59,7 +59,7 @@ public class HistoryManageService {
      * @param version 数据库的乐观锁标识，防止修改时冲突
      * @throws Exception 传入的id有误时抛出异常，操作数据库失败时抛出异常
      */
-    public void deleteSite(Long id, int version) throws Exception {
+    public void deleteHistory(Long id, int version) throws Exception {
         // 数据验证
         if (id == 0) {
             throw new Exception("id不能为空");
